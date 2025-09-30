@@ -14,7 +14,6 @@ app.use((req, res, next) => {
     next();
   });
 
-const CONNECTION_URL="mongodb+srv://ananyathehater:ananyathehater%40123@cluster0.3qyvgmz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const PORT=process.env.PORT || 3000;
 mongoose.connect(CONNECTION_URL)
