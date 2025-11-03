@@ -4,9 +4,18 @@ import Form from "./Form/Form";
 import Posts from "./Posts/Posts";
 import book from "url:./images/book.jpeg";
 import useStyles from './styles';
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchAllPost } from "../reducers/postsSlice";
+import { getPosts } from "../features/postsThunk";
 
 const App = () => {
     const classes=useStyles();
+    const dispatch=useDispatch();
+
+    useEffect(()=>{
+       dispatch(getPosts())
+    },[])
 
   return (
     
