@@ -5,17 +5,18 @@ import Posts from "./Posts/Posts";
 import book from "url:./images/book.jpeg";
 import useStyles from './styles';
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { fetchAllPost } from "../reducers/postsSlice";
 import { getPosts } from "../features/postsThunk";
 
 const App = () => {
     const classes=useStyles();
     const dispatch=useDispatch();
+    const [currentId,setcurrentId]=useState(null);
 
     useEffect(()=>{
        dispatch(getPosts())
-    },[])
+    },[currentId,dispatch])
 
   return (
     
@@ -30,11 +31,12 @@ const App = () => {
             <Grid container justifyContent="space-between" alignItems="stretch" spacing={3}>
             
             <Grid item xs={12} sm={7}>
-              <Posts/>
+              <Posts setcurrentId={setcurrentId}/>
             </Grid>
 
             <Grid item xs={12} sm={4}>
-                <Form/>
+              
+                <Form currentId={currentId} setcurrentId={setcurrentId}/>
                 </Grid>
 
             </Grid>

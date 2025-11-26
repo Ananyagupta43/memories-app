@@ -1,13 +1,14 @@
-import React, { use } from "react";
+import React, { useState,useEffect } from "react";
 import useStyles from "./styles";
 import { useState } from "react";
 import { TextField, Typography, Button, Paper } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { createPostNew } from "../../features/postsThunk";
+import { createPostNew,editPost } from "../../features/postsThunk";
 import FileBase from 'react-file-base64'
+import { useSelector } from "react-redux";
 
-const Form = () => {
-
+const Form = ({currentId,setcurrentId} ) => {
+    const singlePost=useSelector((store)=> currentId!=null ? store.posts.posts.find((postValue)=>postValue._id==currentId):null);
     const dispatch=useDispatch();
 
 
@@ -21,10 +22,32 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPostNew(postData))
+    if(currentId){
+        //console.log(postData)
+        dispatch(editPost({currentId,postData}));
+    }else{
+        dispatch(createPostNew(postData))
+    }
+    clear();
+   
   };
-  const clear = () => {};
+  const clear = () => {
+    setcurrentId(null);
+    setpostData({
+        creator: "",
+        message: "",
+        title: "",
+        tags: "",
+        selectedFile: "",
+      })
+  };
 
+  useEffect(()=>{
+    if(singlePost){
+        setpostData(singlePost)
+    }
+
+  },[singlePost])
 
   const classes = useStyles();
   return (
@@ -35,7 +58,7 @@ const Form = () => {
         className={`${classes.form} ${classes.root}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">Creating a memory</Typography>
+        <Typography variant="h6">{!currentId ? "Creating" : "Editing"} a memory</Typography>
         <TextField
           name="creator"
           variant="outlined"

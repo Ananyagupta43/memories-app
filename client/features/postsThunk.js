@@ -29,3 +29,27 @@ export const createPostNew=createAsyncThunk(
 
 )
 
+export const editPost=createAsyncThunk(
+    'features/updatePost',
+    async({currentId,postData},{rejectWithValue})=>{
+        try{
+            const {data} =await api.updatedPost(currentId,postData);
+            return data;
+        }catch(err){
+            return rejectWithValue(err?.data?.message || err?.message)
+        }
+    }
+)
+
+export const deletePost=createAsyncThunk(
+    '/features/deletePost',
+    async(currentId,{rejectWithValue})=>{
+         try{
+            console.log(currentId);
+            const {data} = await api.deletePost(currentId);
+            return data;
+         }catch(err){
+            return rejectWithValue(err?.data?.message || err?.message)
+         }
+    }
+)
